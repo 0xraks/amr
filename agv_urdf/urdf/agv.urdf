@@ -1,0 +1,53 @@
+<robot name="agv">
+
+	<!-- * * * Link Definitions * * * -->
+
+ 	<link name="base_link">
+		<visual>
+		    <origin rpy="0 0 0" xyz="0 0 -0.06"/>
+          <axis xyz="0 0 0" />
+			<geometry>
+                <mesh filename="C:\Users\Suhas\Desktop\agv_urdf\urdf\meshes\base_final.STL"/>
+			</geometry>
+			<material name="c">
+	       		<color rgba="0 0.9 0.9 1.0"/>
+	     	</material>
+		</visual>	
+	</link>
+	<link name="left_wheel">
+		<visual>
+          
+          <origin xyz="0 0.255 0" rpy="0 0 0"/>
+          <geometry>
+            <!--<cylinder length="0.04" radius="0.0635"/>-->
+            <mesh filename="C:\Users\Suhas\Desktop\agv_urdf\urdf\meshes\wheel_final.STL"/>
+
+
+          </geometry>
+		</visual>
+	</link>
+	<joint name="left_wheel_joint" type="continuous">
+      	<origin xyz="0 0 0" rpy="0 0 0"/>
+     	<parent link = "base_link"/>
+      	<child  link = "left_wheel"/>
+        <axis xyz="0 1 0"/>
+	</joint>
+	<link name="right_wheel">
+		<visual>
+          
+          <origin xyz="0 -0.255 0" rpy="0 0 0"/>
+          <geometry>
+            <!-- <cylinder length="0.04" radius="0.0635"/> -->
+            <mesh filename="C:\Users\Suhas\Desktop\agv_urdf\urdf\meshes\wheel_final.STL"/>
+          </geometry>
+		</visual>
+	</link>
+	<joint name="right_wheel_joint" type="continuous">
+      	<origin xyz="0 0 0" rpy="0 0 0"/>
+     	<parent link = "base_link"/>
+      	<child  link = "right_wheel"/>
+        <axis xyz="0 1 0"/>
+	</joint>
+
+
+</robot>
