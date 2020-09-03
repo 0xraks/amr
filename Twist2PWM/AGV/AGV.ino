@@ -1,4 +1,4 @@
-﻿#include <ros.h>
+#include <ros.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
 ros::NodeHandle nh;
