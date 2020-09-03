@@ -29,7 +29,6 @@ void setup() {
   }
 
 void loop() {
-  Serial.println(counts);
 }
 
 void readEncoder() //this function is triggered by the encoder CHANGE, and increments the encoder counter
