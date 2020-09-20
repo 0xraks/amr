@@ -7,15 +7,19 @@
 #include <std_msgs/Int32.h>
 #include <std_msgs/Int64.h>
 
+// ENCODER PIN DECLERATIONS
+
 #define EncoderPinA 2
 #define EncoderPinB 3
 #define EncoderPinA2 13
 #define EncoderPinB2 19
 
-#define Left_Motor_A 4
-#define Left_Motor_B 5
-#define Right_Motor_A 6
-#define Right_Motor_B 7
+//MOTOR PIN DECLERATIONS
+
+#define Left_Motor_PWM 6
+#define Left_Motor_DIR 9
+#define Right_Motor_PWM 10
+#define Right_Motor_DIR 11
 
 ros::NodeHandle nh;
 std_msgs::Int32 lefttick;
@@ -36,8 +40,8 @@ void messageCb1( const std_msgs::Float64& msg) {
 
 ros::Subscriber<std_msgs::Float64> sub("left_publish", &messageCb);
 ros::Subscriber<std_msgs::Float64> sub2("right_publish", &messageCb1);
-ros::Publisher tickpubleft("/left/encoderTicks",&lefttick);
-ros::Publisher tickpubright("/right/encoderTicks",&righttick);
+ros::Publisher tickpubleft("/left/encoderTicks", &lefttick);
+ros::Publisher tickpubright("/right/encoderTicks", &righttick);
 
 void setup() {
   pinMode(EncoderPinA, INPUT); //initialize Encoder Pins
@@ -50,10 +54,10 @@ void setup() {
   digitalWrite(EncoderPinB2, LOW);
   attachInterrupt(digitalPinToInterrupt(2), readEncoder, CHANGE);
   attachInterrupt(digitalPinToInterrupt(13), readEncoder2, CHANGE);
-  pinMode(Left_Motor_A, OUTPUT);
-  pinMode(Left_Motor_B, OUTPUT);
-  pinMode(Right_Motor_A, OUTPUT);
-  pinMode(Right_Motor_B, OUTPUT);
+  pinMode(Left_Motor_PWM, OUTPUT);
+  pinMode(Left_Motor_DIR, OUTPUT);
+  pinMode(Right_Motor_PWM, OUTPUT);
+  pinMode(Right_Motor_DIR, OUTPUT);
   nh.initNode();
   nh.subscribe(sub);
   nh.subscribe(sub2);
@@ -62,46 +66,45 @@ void setup() {
 }
 
 void loop() {
-    nh.spinOnce();
-    lefttick.data = count;
-    righttick.data=count2;
-    tickpubleft.publish(&lefttick);
-    tickpubright.publish(&righttick);
-    
-  
-  
-  if (x>0)
-  {
-    analogWrite(9,x);
-    digitalWrite(6,LOW);
+  nh.spinOnce();
+  lefttick.data = count;
+  righttick.data = count2;
+  tickpubleft.publish(&lefttick);
+  tickpubright.publish(&righttick);
+
+
+
+  if (x > 0)
+  { analogWrite(Left_Motor_PWM, x);
+    digitalWrite(Left_Motor_DIR, LOW);
+
   }
-  if (x<0)
-  { x=-1*x;
-    digitalWrite(9,LOW);
-    analogWrite(6,x);
-  }
-  if(x==0.0)
+  if (x < 0)
   {
-    digitalWrite(9,LOW);
-    digitalWrite(6,LOW);
+    analogWrite(Left_Motor_PWM, (-x));
+    digitalWrite(Left_Motor_DIR, HIGH);
+  }
+  if (x == 0.0)
+  {
+    digitalWrite(Left_Motor_PWM, LOW);
+    digitalWrite(Left_Motor_DIR, LOW);
   }
 
 
-  if (y>0.0)
+  if (y > 0.0)
   {
-    analogWrite(11,y);
-    digitalWrite(10,LOW);
+    analogWrite(Right_Motor_PWM, y);
+    digitalWrite(Right_Motor_DIR, LOW);
   }
-  if (y<0.0)
+  if (y < 0.0)
   {
-    y=-1*y;
-    digitalWrite(11,LOW);
-    analogWrite(10,y);
+    analogWrite(Right_Motor_PWM, (-y));
+    digitalWrite(Right_Motor_DIR, HIGH);
   }
-  if(y==0.0)
+  if (y == 0.0)
   {
-    digitalWrite(11,LOW);
-    digitalWrite(10,LOW);
+    digitalWrite(Right_Motor_PWM, LOW);
+    digitalWrite(Right_Motor_DIR, LOW);
   }
 
 
